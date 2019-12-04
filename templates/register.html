@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+  <style>
+      #register_btn{
+        font-family: "Roboto", sans-serif;
+        text-transform: uppercase;
+        outline: 0;
+        background: #4CAF50;
+        width: 100%;
+        border: 0;
+        padding: 15px;
+        color: #FFFFFF;
+        font-size: 14px;
+        -webkit-transition: all 0.3 ease;
+        transition: all 0.3 ease;
+        cursor: pointer;
+      }
+  </style>
+</head>
+<body>
+    <div class="login-page">
+            <div class="form">
+            <div class="sort-contents">
+                <input id="action-lullaby" type="radio" name="action" checked onclick="disable_url_input()">
+                <label for="action-lullaby">자장가</label>
+                <input id="action-youtube" type="radio" name="action" onclick="able_url_input()">
+                <label for="action-youtube">유튜브</label>
+            </div>
+            <form class="login-form">
+                <input id="url_input" type="text" placeholder="url" disabled="disabled"/>
+                <input id="register_btn" type="button" onclick="register_action()" value="Register"/>
+            </form>
+            </div>
+    </div>
+    <script>
+        function disable_url_input() {
+            action_lullaby = document.getElementById("action-lullaby");
+            url_input = document.getElementById("url_input");
+            if(action_lullaby.checked == true) {
+                url_input.disabled = true
+            }
+        }
+
+        function able_url_input() {
+            action_youtube = document.getElementById("action-youtube");
+            url_input = document.getElementById("url_input");
+            if(action_youtube.checked == true) {
+                url_input.disabled = false
+            }
+        }
+
+        function register_action() {
+            register_url = "/register/";
+            action = (document.getElementById("action-lullaby").checked == true) ? "lullaby" : "youtube"; 
+            
+            if(action == "lullaby") {
+                register_url += "lullaby";
+            } else if(action == "youtube") {
+                youtube_link = document.getElementById("url_input").value;
+                register_url += "youtube/" + youtube_link
+            }
+            window.location.href = register_url;
+        }
+    </script>
+</body>
+</html>
