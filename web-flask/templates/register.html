@@ -60,6 +60,7 @@
                 register_url += "lullaby";
             } else if(action == "youtube") {
                 youtube_link = document.getElementById("url_input").value;
+                youtube_link = encodeURI(youtube_link)
                 register_url += "youtube/" + youtube_link
             }
             window.location.href = register_url;
