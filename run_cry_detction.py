@@ -1,20 +1,21 @@
-import os
+import os, time
 import json
 import paho.mqtt.client as mqtt
+from mqttThread import mqttThread
 from make_prediction import predict_sound
 
 setting_path = '{}/../settings/settings.json'.format(os.path.dirname(os.path.abspath(__file__)))
 
-def on_connect(client, userdata, flags, rc): 
-    print("Connected with result code "+str(rc)) 
-    client.subscribe("action")
+# def on_connect(client, userdata, flags, rc): 
+#     print("Connected with result code "+str(rc)) 
+#     client.subscribe("action")
 
-def on_message(client, userdata, msg): 
-    #string 형태의 payload -> dict
-    reg_settings = json.loads(msg.payload)
+# def on_message(client, userdata, msg): 
+#     #string 형태의 payload -> dict
+#     reg_settings = json.loads(msg.payload)
     
-    with open(setting_path, 'w', encoding='UTF-8') as setting_file:
-        json.dump(reg_settings, setting_file, indent='\t')
+#     with open(setting_path, 'w', encoding='UTF-8') as setting_file:
+#         json.dump(reg_settings, setting_file, indent='\t')
 
 def clean_up():
     #재생 되고 있는 사운드가 있으면 stop
@@ -43,6 +44,7 @@ def load_settings():
 
 
 def start_playing(playing):
+
     if(playing == True):    #이미 자장가 또는 유튜브가 재생 중인 경우
         return
     else:
@@ -60,20 +62,25 @@ def start_playing(playing):
 
 if __name__ == "__main__":
     playing = False
+    
+    connectMqtt = mqttThread()
+    connectMqtt.start()
     try:
         while True:
             #어떤 행동을 취할 지에 대한 setting 정보를 mqtt 데이터로 전달 받음
-            client = mqtt.Client()
-            client.on_connect = on_connect 
-            client.on_message = on_message 
-            client.connect("52.79.58.10", 1883, 60) 
-            client.loop_forever()
+            # client = mqtt.Client()
+            # client.on_connect = on_connect 
+            # client.on_message = on_message 
+            # client.connect("52.79.58.10", 1883, 60) 
+            # client.loop_forever()
             
             #recording을 멀티 쓰레드로 처리하면 prediction할 때 .wav파일이 없어서 오류 날 수 있음
             #recording - prediction은 sequential 한 과정
             #멀티 쓰레드로 한다면 predict()를 콜백으로??
-            recording()
+            #recording()
+            time.sleep(5)
             prediction = predict()
+            print('predicted ... {}'.format(prediction))
             #아기가 울지 않는 경우
             if(prediction == 0):
                 stop_playing(playing)
