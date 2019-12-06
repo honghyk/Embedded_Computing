@@ -20,7 +20,7 @@ def pub_lullaby():
     print('pub lullaby')
     payload = {
         'action' : 'lullaby',
-        'link' : ""
+        'url' : ""
     }
     json_payload = json.dumps(payload)
     print(json_payload)
@@ -28,11 +28,11 @@ def pub_lullaby():
 
     return "registered"
 
-@app.route("/register/youtube/<link>")
-def pub_youtube(link):
+@app.route("/register/youtube/<url>")
+def pub_youtube(url):
     payload = {
         'action' : 'youtube',
-        'link' : link
+        'url' : url
     }
     json_payload = json.dumps(payload)
     print(json_payload)
