@@ -30,9 +30,10 @@ def pub_lullaby():
 
 @app.route("/register/youtube/<url>")
 def pub_youtube(url):
+    video_tag = request.query_string.decode('ascii')
     payload = {
         'action' : 'youtube',
-        'url' : url
+        'url' : url + '?' + video_tag
     }
     json_payload = json.dumps(payload)
     print(json_payload)
