@@ -3,9 +3,10 @@ import json
 import paho.mqtt.client as mqtt
 from mqttThread import mqttThread
 from make_prediction import predict_sound
-from player import play
+from player import player
 setting_path = '{}/../settings/settings.json'.format(os.path.dirname(os.path.abspath(__file__)))
-
+classicThread = player('~/project/Embedded_Computing/baby_cry/lullaby/lullaby_classic.wav')\
+youtubeThread = player('./fromYoutube.mp4')
 # def on_connect(client, userdata, flags, rc): 
 #     print("Connected with result code "+str(rc)) 
 #     client.subscribe("action")
@@ -19,7 +20,13 @@ setting_path = '{}/../settings/settings.json'.format(os.path.dirname(os.path.abs
 
 def clean_up():
     #재생 되고 있는 사운드가 있으면 stop
-    pass
+    global classicThread, youtubeThread
+    action, url = load_settings()
+    if action == 'lullaby':
+        classicThread.stop = True
+    elif action == 'youtube':
+        youtubeThread.stop = True
+    
 
 def recording():
     os.system('arecord -D plughw:1,0 -d 9 -f S16_LE -c1 -r44100 -t wav ..recording/signal_9s.wav')
@@ -32,6 +39,7 @@ def predict():
 def stop_playing(playing):
     if(playing == True):
         playing = False
+       
     
 def load_settings():
     with open(setting_path) as json_file:
@@ -44,7 +52,7 @@ def load_settings():
 
 
 def start_playing(playing):
-
+    global classicThread, youtubeThread
     if(playing == True):    #이미 자장가 또는 유튜브가 재생 중인 경우
         return
     else:
@@ -54,16 +62,19 @@ def start_playing(playing):
             #play lullaby
             print('play lullaby...')
             #os.system('aplay -D plughw:0,0 ~/project/Embedded_Computing/baby_cry/lullaby/lullaby_classic.wav')
-            classicThread = player('~/project/Embedded_Computing/baby_cry/lullaby/lullaby_classic.wav')
+            classicThread = player('~/project/Embedded_Computing/baby_cry/lullaby/lullaby_classic.wav', False)
             classicThread.start()
+            
         elif action == "youtube":
             youtube_url = "youtube.com/" + url
             #play youtube
             #play(youtube_url)
             #os.system('omxplayer ./fromYoutube.mp4')
-            youtubeThread = player('./fromYoutube.mp4')
+            youtubeThread = player('./fromYoutube.mp4', False)
             youtubeThread.start()
         playing = True
+    
+
 
 
 if __name__ == "__main__":
@@ -90,6 +101,7 @@ if __name__ == "__main__":
             #아기가 울지 않는 경우
             if(prediction == 0):
                 stop_playing(playing)
+                clean_up()
             #아기가 울고 있는 경우
             elif(prediction == 1):
                 start_playing(playing)
