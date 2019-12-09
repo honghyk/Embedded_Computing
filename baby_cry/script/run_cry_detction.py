@@ -54,13 +54,15 @@ def start_playing(playing):
             #play lullaby
             print('play lullaby...')
             #os.system('aplay -D plughw:0,0 ~/project/Embedded_Computing/baby_cry/lullaby/lullaby_classic.wav')
-            
+            classicThread = player('~/project/Embedded_Computing/baby_cry/lullaby/lullaby_classic.wav')
+            classicThread.start()
         elif action == "youtube":
             youtube_url = "youtube.com/" + url
             #play youtube
             #play(youtube_url)
             #os.system('omxplayer ./fromYoutube.mp4')
-            
+            youtubeThread = player('./fromYoutube.mp4')
+            youtubeThread.start()
         playing = True
 
 
