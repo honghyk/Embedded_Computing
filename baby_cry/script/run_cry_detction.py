@@ -3,7 +3,7 @@ import json
 import paho.mqtt.client as mqtt
 from mqttThread import mqttThread
 from make_prediction import predict_sound
-from playYoutube import play
+from player import play
 setting_path = '{}/../settings/settings.json'.format(os.path.dirname(os.path.abspath(__file__)))
 
 # def on_connect(client, userdata, flags, rc): 
@@ -53,12 +53,14 @@ def start_playing(playing):
         if action == 'lullaby':
             #play lullaby
             print('play lullaby...')
-            os.system('aplay -D plughw:0,0 ~/project/Embedded_Computing/baby_cry/lullaby/lullaby_classic.wav')
+            #os.system('aplay -D plughw:0,0 ~/project/Embedded_Computing/baby_cry/lullaby/lullaby_classic.wav')
+            
         elif action == "youtube":
             youtube_url = "youtube.com/" + url
             #play youtube
             #play(youtube_url)
-            os.system('omxplayer ./fromYoutube.mp4')
+            #os.system('omxplayer ./fromYoutube.mp4')
+            
         playing = True
 
 
