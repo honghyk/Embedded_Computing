@@ -7,9 +7,6 @@ def play(path, stop):
         if stop == True:
             break
     player.quit()
-def stop():
-    global player
-    player.stop()
 
 class player(threading.Thread):
     def __init__(self, path, stop):
