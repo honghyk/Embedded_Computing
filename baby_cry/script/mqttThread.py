@@ -1,7 +1,7 @@
 import threading
 import os, json
 import paho.mqtt.client as mqtt
-
+from downloadyoutube import downloadVideo
 setting_path = '{}/../settings/settings.json'.format(os.path.dirname(os.path.abspath(__file__)))
 
 def on_connect(client, userdata, flags, rc): 
@@ -14,6 +14,14 @@ def on_message(client, userdata, msg):
     
     with open(setting_path, 'w', encoding='UTF-8') as setting_file:
         json.dump(reg_settings, setting_file, indent='\t')
+    with open(setting_path) as json_file:
+        settings = json.load(json_file)
+        action = settings['action']
+        url = settings['url']
+        if action == 'youtube':
+            yt = 'https://www.youtube.com/' + url
+            downloadVideo(yt)
+
 
 
 class mqttThread(threading.Thread):

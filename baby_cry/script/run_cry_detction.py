@@ -5,7 +5,7 @@ from mqttThread import mqttThread
 from make_prediction import predict_sound
 from player import player
 setting_path = '{}/../settings/settings.json'.format(os.path.dirname(os.path.abspath(__file__)))
-classicThread = player('~/project/Embedded_Computing/baby_cry/lullaby/lullaby_classic.wav')\
+classicThread = player('~/project/Embedded_Computing/baby_cry/lullaby/lullaby_classic.wav')
 youtubeThread = player('./fromYoutube.mp4')
 # def on_connect(client, userdata, flags, rc): 
 #     print("Connected with result code "+str(rc)) 
