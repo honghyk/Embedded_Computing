@@ -5,8 +5,9 @@ from mqttThread import mqttThread
 from make_prediction import predict_sound
 from player import player
 setting_path = '{}/../settings/settings.json'.format(os.path.dirname(os.path.abspath(__file__)))
-classicThread = player('~/project/Embedded_Computing/baby_cry/lullaby/lullaby_classic.wav')
-youtubeThread = player('./fromYoutube.mp4')
+classicThread = player('~/project/Embedded_Computing/baby_cry/lullaby/lullaby_classic.wav', False)
+youtubeThread = player('./fromYoutube.mp4', False)
+playing = False
 # def on_connect(client, userdata, flags, rc): 
 #     print("Connected with result code "+str(rc)) 
 #     client.subscribe("action")
@@ -36,7 +37,8 @@ def predict():
     print('predict...')
     return predict_sound()
 
-def stop_playing(playing):
+def stop_playing():
+    global playing
     if(playing == True):
         playing = False
        
@@ -51,9 +53,11 @@ def load_settings():
     return (action, url)
 
 
-def start_playing(playing):
+def start_playing():
     global classicThread, youtubeThread
+    global playing
     if(playing == True):    #이미 자장가 또는 유튜브가 재생 중인 경우
+        print('already playing....')
         return
     else:
         print('start playing...')
@@ -67,6 +71,8 @@ def start_playing(playing):
             
         elif action == "youtube":
             youtube_url = "youtube.com/" + url
+            print('play youtube...')
+            print('is playing: ' + str(playing))
             #play youtube
             #play(youtube_url)
             #os.system('omxplayer ./fromYoutube.mp4')
@@ -76,9 +82,7 @@ def start_playing(playing):
     
 
 
-
 if __name__ == "__main__":
-    playing = False
     
     connectMqtt = mqttThread()
     connectMqtt.start()
@@ -100,11 +104,11 @@ if __name__ == "__main__":
             print('predicted ... {}'.format(prediction))
             #아기가 울지 않는 경우
             if(prediction == 0):
-                stop_playing(playing)
+                stop_playing()
                 clean_up()
             #아기가 울고 있는 경우
             elif(prediction == 1):
-                start_playing(playing)
+                start_playing()
     
     except KeyboardInterrupt:
         clean_up()

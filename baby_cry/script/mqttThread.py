@@ -1,7 +1,7 @@
 import threading
 import os, json
 import paho.mqtt.client as mqtt
-from downloadyoutube import downloadVideo
+from downloadYoutube import downloadVideo
 setting_path = '{}/../settings/settings.json'.format(os.path.dirname(os.path.abspath(__file__)))
 
 def on_connect(client, userdata, flags, rc): 

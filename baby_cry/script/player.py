@@ -1,9 +1,13 @@
+import threading
+import time
 from omxplayer import OMXPlayer 
 
 def play(path, stop):
-    player = OMXPlayer('fromYoutube.mp4') 
+    player = OMXPlayer('./fromYoutube.mp4') 
     player.play()
-    while player.is_playing:
+    print('play fromYoutube4')
+    while True:
+        print(player.is_playing())
         if stop == True:
             break
     player.quit()
