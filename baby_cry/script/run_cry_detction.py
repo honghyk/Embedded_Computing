@@ -4,6 +4,7 @@ import paho.mqtt.client as mqtt
 from mqttThread import mqttThread
 from make_prediction import predict_sound
 from player import player
+from omxplayer import OMXPlayer
 setting_path = '{}/../settings/settings.json'.format(os.path.dirname(os.path.abspath(__file__)))
 classicThread = player('~/project/Embedded_Computing/baby_cry/lullaby/lullaby_classic.wav', False)
 youtubeThread = player('./fromYoutube.mp4', False)
@@ -76,8 +77,11 @@ def start_playing():
             #play youtube
             #play(youtube_url)
             #os.system('omxplayer ./fromYoutube.mp4')
-            youtubeThread = player('./fromYoutube.mp4', False)
-            youtubeThread.start()
+            player = OMXPlayer('./fromYoutube.mp4')
+            player.play
+            while True:
+                pass
+            player.quit()
         playing = True
     
 
