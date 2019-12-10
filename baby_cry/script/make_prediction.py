@@ -83,7 +83,6 @@ def predict_sound():
 
     majority_voter = MajorityVoter(predictions)
     majority_vote = majority_voter.vote()
-    print(majority_vote)
 
     ####################################################################################################################
     # SAVE
@@ -95,4 +94,7 @@ def predict_sound():
     return majority_vote
 
 if __name__ == '__main__':
-    predict_sound()
+    try:
+        predict_sound()
+    except KeyboardInterrupt:
+        exit()

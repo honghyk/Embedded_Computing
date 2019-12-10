@@ -8,6 +8,7 @@ from make_prediction import predict_sound
 from omxplayer import OMXPlayer
 
 setting_path = '{}/../settings/settings.json'.format(os.path.dirname(os.path.abspath(__file__)))
+recording_path = '{}/../recording/signal_9s.wav'.format(os.path.dirname(os.path.abspath(__file__)))
 
 player = None
 playing = False
@@ -20,8 +21,8 @@ def clean_up():
 def recording():
     duration = 9
     fs = 44100
-	recording = sd.rec((int(duration * fs)), samplerate=fs, channels=1, blocking=True)
-	write('..recording/signal_9s.wav', fs, recording)
+    recording = sd.rec((int(duration * fs)), samplerate=fs, channels=1, blocking=True)
+    write(recording_path, fs, recording)
 
 
 def predict():
@@ -69,7 +70,11 @@ def start_playing():
         elif action == "youtube":
             #play youtube
             print('play youtube sound...')
-            player = OMXPlayer('./fromYoutube.mp4')
+            if os.path.exists('./fromYoutube.mp4'):
+                player = OMXPlayer('./fromYoutube.mp4')
+            else:
+                print('downloaded not yet')
+                player = OMXPlayer('./fromYoutube.mp4')
             
         player.exitEvent = playing_done
         playing = True
