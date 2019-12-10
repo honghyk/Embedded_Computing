@@ -4,7 +4,6 @@ from omxplayer import OMXPlayer
 
 def play(self):
     player = OMXPlayer('./fromYoutube.mp4') 
-    player.play()
     #time.sleep(3)
     print('play fromYoutube4')
     while True:

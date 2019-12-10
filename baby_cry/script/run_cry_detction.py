@@ -38,8 +38,9 @@ def predict():
     print('predict...')
     return predict_sound()
 
-def stop_playing():
+def stop_playing(player, exit_status=15):
     global playing
+    print('stop playing called')
     if(playing == True):
         playing = False
        
@@ -67,8 +68,6 @@ def start_playing():
             #play lullaby
             print('play lullaby...')
             #os.system('aplay -D plughw:0,0 ~/project/Embedded_Computing/baby_cry/lullaby/lullaby_classic.wav')
-            classicThread = player('~/project/Embedded_Computing/baby_cry/lullaby/lullaby_classic.wav', False)
-            classicThread.start()
             
         elif action == "youtube":
             youtube_url = "youtube.com/" + url
@@ -78,10 +77,8 @@ def start_playing():
             #play(youtube_url)
             #os.system('omxplayer ./fromYoutube.mp4')
             player = OMXPlayer('./fromYoutube.mp4')
-            player.play
-            while True:
-                pass
-            player.quit()
+            
+        player.exitEvent = stop_playing
         playing = True
     
 
