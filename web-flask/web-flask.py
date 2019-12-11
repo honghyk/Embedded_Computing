@@ -1,7 +1,6 @@
 from flask import Flask, request, redirect, render_template, url_for
 from flask_mqtt import Mqtt
 import json
-from mqttThread import MqttThread
 
 app = Flask(__name__)
 app.config['MQTT_BROKER_URL'] = "52.79.58.10"
@@ -55,6 +54,7 @@ def start_detection():
 
         #라즈베리파이에 사용자가 detection을 시작했다는 메세지 전송
         mqtt.publish('start_detection', json_payload)
+        status['crying'] = False
         
         return render_template("register.html", **status)
 
@@ -99,4 +99,4 @@ def pub_youtube(url):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80, debug=True)
+    app.run(host='0.0.0.0', port=3000, debug=True)
