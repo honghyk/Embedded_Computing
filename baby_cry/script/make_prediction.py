@@ -14,7 +14,7 @@ from lib.feature_engineer import FeatureEngineer
 from lib.majority_voter import MajorityVoter
 
 
-def predict_sound():
+def predict_sound(idx=-1):
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--load_path_data',
@@ -35,7 +35,12 @@ def predict_sound():
     ####################################################################################################################
 
     # Read signal
-    file_name = 'signal_9s.wav'       # only one file in the folder
+    #실제 녹음하여 사용할 경우
+    if idx == -1:
+        file_name = 'signal_9s.wav'
+    #시연 용 시뮬레이션
+    else:
+        file_name = 'signal_9s_{}.wav'.format(idx)       # only one file in the folder
     file_reader = Reader(os.path.join(load_path_data, file_name))
     play_list = file_reader.read_audio_file()
 
