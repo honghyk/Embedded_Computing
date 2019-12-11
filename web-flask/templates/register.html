@@ -2,6 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="refresh" content="30">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
+  <script src="{{url_for('static', filename='mqtt.js') }}" type="text/javascript"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
   <style>
       #register_btn{
@@ -18,20 +21,32 @@
         transition: all 0.3 ease;
         cursor: pointer;
       }
+      p {
+          text-align: left
+      }
   </style>
 </head>
 <body>
     <div class="login-page">
             <div class="form">
+                {% if crying == True %}
+                <p style="font-size: 24px;"><b>아이가 울고 있어요</b></p>
+                {% endif %}
+                {% if action == "lullaby" %}
+                <p>아이가 울면 자장가를 재생합니다</p>
+                {% else %}
+                <p>아이가 울면 유튜브를 재생합니다</p>
+                <p><small>유튜브 url<br/>: youtube.com/{{ url }}</small></p>
+                {% endif %}
             <div class="sort-contents">
-                <input id="action-lullaby" type="radio" name="action" checked onclick="disable_url_input()">
+                <input id="action-lullaby" type="radio" name="action" onclick="disable_url_input()" checked>
                 <label for="action-lullaby">자장가</label>
                 <input id="action-youtube" type="radio" name="action" onclick="able_url_input()">
-                <label for="action-youtube">유튜브</label>
+                <label for="action-youtube">유튜브</label> 
             </div>
             <form class="login-form">
-                <input id="url_input" type="text" placeholder="url" disabled="disabled"/>
-                <input id="register_btn" type="button" onclick="register_action()" value="Register"/>
+                <input id="url_input" type="text" name="url" vlaue="" placeholder="url" disabled="disabled"/>
+                <input id="register_btn" type="button" onclick=register_action() value="Register"/>
             </form>
             </div>
     </div>
@@ -62,6 +77,9 @@
                 youtube_link = document.getElementById("url_input").value;
                 youtube_link = encodeURI(youtube_link)
                 register_url += "youtube/" + youtube_link
+                if(youtube_link = "") {
+                    //make pop up saying enter the youtube url
+                }
             }
             window.location.href = register_url;
         }

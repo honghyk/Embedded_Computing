@@ -6,6 +6,7 @@ from scipy.io.wavfile import write
 from mqttThread import mqttThread
 from make_prediction import predict_sound
 from omxplayer import OMXPlayer
+import paho.mqtt.publish as publish
 
 setting_path = '{}/../settings/settings.json'.format(os.path.dirname(os.path.abspath(__file__)))
 recording_path = '{}/../recording/signal_9s.wav'.format(os.path.dirname(os.path.abspath(__file__)))
@@ -93,9 +94,11 @@ if __name__ == "__main__":
             print('predicted ... {}'.format(prediction))
             #아기가 울지 않는 경우
             if(prediction == 0):
+                publish.single("detection", payload=False, hostname="52.79.58.10")
                 stop_playing()
             #아기가 울고 있는 경우
             elif(prediction == 1):
+                publish.single("detection", payload=True, hostname="52.79.58.10")
                 start_playing()
     
     except KeyboardInterrupt:

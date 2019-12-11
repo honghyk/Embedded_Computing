@@ -14,6 +14,7 @@ def on_message(client, userdata, msg):
     
     with open(setting_path, 'w', encoding='UTF-8') as setting_file:
         json.dump(reg_settings, setting_file, indent='\t')
+    
     with open(setting_path) as json_file:
         settings = json.load(json_file)
         action = settings['action']
