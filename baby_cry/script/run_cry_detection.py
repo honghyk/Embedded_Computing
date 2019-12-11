@@ -102,7 +102,7 @@ def on_message(client, userdata, msg):
     connectMqtt = mqttThread()
     connectMqtt.start()
  
-    #등록되어 있는 설정을 json 파일로부터 읽어옴
+    #사용자가 웹에서 입력한 설정 값을 라즈베리파이 설정 파일에 write
     reg_settings = json.loads(msg.payload)
     
     with open(setting_path, 'w', encoding='UTF-8') as setting_file:
